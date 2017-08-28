@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "description": "a html to print api",
   "main": "index.js",
-
+  "engines": {
+     "node": "8.4.0"
+   },
   "dependencies": {
     "express": "^4.15.4",
     "puppeteer": "^0.10.1",
