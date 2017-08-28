@@ -16,7 +16,7 @@ app.get('/:url', async (req, res) => {
   if(validUrl.isUri(req.params.url)){
     res.contentType("application/pdf");
 
-    const browser = await puppeteer.launch({args: ['--no-sandbox', '--disable-setuid-sandbox']});
+    const browser = await puppeteer.launch({args: ['--no-sandbox']});
     const page = await browser.newPage();
 
     await page.goto(req.params.url, {waitUntil: 'networkidle'});
@@ -31,6 +31,6 @@ app.get('/:url', async (req, res) => {
 });
 
 
-app.listen(3000, function () {
+app.listen(process.env.PORT, function () {
   console.log('server running')
 })

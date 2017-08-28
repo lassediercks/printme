@@ -6,7 +6,6 @@
 
   "dependencies": {
     "express": "^4.15.4",
-    "html5-to-pdf": "^2.2.4",
     "puppeteer": "^0.10.1",
     "valid-url": "^1.0.9"
   },
