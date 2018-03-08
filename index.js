@@ -4,6 +4,14 @@ const app = express();
 const validUrl = require("valid-url");
 const port = process.env.PORT || 3000;
 
+var http = require("http");
+
+app.set("port", process.env.PORT || 5000);
+
+setInterval(function() {
+  http.get("https://printmenow.herokuapp.com");
+}, 300000);
+
 app.get("/", async (req, res) => {
   if (!req.params.url) {
     res.send("url is missing lol!");
