@@ -9,7 +9,7 @@ var http = require("http");
 app.set("port", process.env.PORT || 5000);
 
 setInterval(function() {
-  http.get("https://printmenow.herokuapp.com");
+  http.get("http://printmenow.herokuapp.com");
 }, 300000);
 
 app.get("/", async (req, res) => {
