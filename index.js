@@ -36,6 +36,7 @@ async function createPdf(url, res) {
     });
 
     res.contentType('application/pdf');
+    res.status(200);
     res.send(data);
     res.end();
   } else {
