@@ -18,7 +18,7 @@ setInterval(() => {
 }, 300000);
 
 async function createPdf(url, res) {
-  if (validUrl.isUri(url)) {
+  if (validUrl.isUri(decodeURIComponent(url))) {
     const browser = await puppeteer.launch({
       args: ['--no-sandbox', '--disable-setuid-sandbox'],
     });
@@ -44,7 +44,6 @@ async function createPdf(url, res) {
 
 app.post('/endpoint', cors(), (req, res) => {
   console.log(req.body.url);
-  console.log(req.params.url);
   createPdf(req.body.url, res);
 });
 
