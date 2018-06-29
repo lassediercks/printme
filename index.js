@@ -18,18 +18,20 @@ setInterval(() => {
 }, 300000);
 
 async function createPdf(url, res) {
-  if (validUrl.isUri(decodeURIComponent(url))) {
+  if (validUrl.isUri(url)) {
     const browser = await puppeteer.launch({
       args: ['--no-sandbox', '--disable-setuid-sandbox'],
     });
 
     const page = await browser.newPage();
-    await page.goto(url, { waitUntil: 'networkidle' });
+    await page.goto(url, { waitUntil: 'networkidle2' });
 
     const file = await page.pdf({
       format: 'A4',
       filename: `${url}.pdf`,
     });
+
+    await browser.close();
 
     console.log('created pdf of ', url);
 
@@ -38,7 +40,9 @@ async function createPdf(url, res) {
     res.send(file);
     res.end();
   } else {
-    res.send(`${url} is not a valid url`);
+    res.status(400);
+    res.send('url missing');
+    res.end();
   }
 }
 
