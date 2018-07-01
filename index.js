@@ -17,25 +17,33 @@ setInterval(() => {
   http.get('http://printmenow.herokuapp.com');
 }, 300000);
 
-async function createPdf(url, res) {
-  if (validUrl.isUri(url)) {
+async function createPdf(req, res) {
+  let file;
+
+  if (validUrl.isUri(req.url)) {
     const browser = await puppeteer.launch({
       args: ['--no-sandbox', '--disable-setuid-sandbox'],
     });
 
     const page = await browser.newPage();
-    await page.goto(url, { waitUntil: 'networkidle2' });
+    await page.goto(req.url, { waitUntil: 'networkidle2' });
 
-    const file = await page.pdf({
-      format: 'A4',
-      filename: `${url}.pdf`,
-    });
+    switch (req.type) {
+      case 'png':
+        file = await page.screenshot({});
+        res.contentType('image/png');
+        console.log('created screenshot of ', req.url);
+
+        break;
+      default:
+        file = await page.pdf({
+          format: 'A4',
+        });
+        console.log('created pdf of ', req.url);
+    }
 
     await browser.close();
 
-    console.log('created pdf of ', url);
-
-    res.contentType('application/pdf');
     res.status(200);
     res.send(file);
     res.end();
@@ -47,8 +55,7 @@ async function createPdf(url, res) {
 }
 
 app.post('/endpoint', cors(), (req, res) => {
-  console.log(req.body.url);
-  createPdf(req.body.url, res);
+  createPdf(req.body, res);
 });
 
 app.get('/:url', async (req, res) => {
